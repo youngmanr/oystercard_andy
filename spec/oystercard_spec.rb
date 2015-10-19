@@ -1,6 +1,9 @@
 require 'oystercard'
 
 describe Oystercard do
+
+subject(:oystercard) { described_class.new }
+
   describe '#initialize' do
     it 'has a balance of zero' do
       expect(subject.balance).to eq(0)
@@ -39,10 +42,14 @@ describe Oystercard do
       subject.touch_in
       expect(subject).to be_in_journey
     end
+    it 'raises an error when below minimum touch in balance' do
+      expect{ subject.touch_in }.to raise_error "Below minimum touch in balance"
+    end
   end
 
   describe '#touch_out' do
     it 'can touch out' do
+      subject.top_up(20)
       subject.touch_in
       subject.touch_out
       expect(subject).not_to be_in_journey
@@ -55,6 +62,7 @@ describe Oystercard do
     end
 
     it 'returns the in_use state when in use' do
+      subject.top_up(20)
       subject.touch_in
       expect(subject).to be_in_journey
     end

@@ -31,12 +31,29 @@ describe Oystercard do
     it 'raises an error if the maximum balance is exceeded' do
       expect{ subject.deduct 1 }.to raise_error "Not enough balance on card, please top up"
     end
-
   end
 
+  describe '#touch_in' do
+    it 'checks the return of value' do
+      expect{ subject.touch_in }.to change{ subject.in_use }.from(false).to(true)
+    end
+  end
 
+  describe '#touch_out' do
+    it 'checks the return of value' do
+      subject.touch_in
+      expect{ subject.touch_out }.to change{ subject.in_use }.from(true).to(false)
+    end
+  end
 
+  describe '#in_journey?' do
+    it 'stores a state of the card' do
+      expect(subject.in_journey?)a.to eq false
+    end
 
-
-
+    it 'stores a state of the card' do
+      subject.touch_in
+      expect(subject.in_journey?).to eq true
+    end
+  end
 end

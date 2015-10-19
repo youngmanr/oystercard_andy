@@ -2,8 +2,6 @@ require 'oystercard'
 
 describe Oystercard do
 
-subject(:oystercard) { described_class.new }
-
   describe '#initialize' do
     it 'has a balance of zero' do
       expect(subject.balance).to eq(0)
@@ -25,23 +23,13 @@ subject(:oystercard) { described_class.new }
     end
   end
 
-  describe '#deduct' do
-    it { is_expected.to respond_to(:deduct).with(1) }
-    it 'deducts the amount from the existing balance' do
-      subject.top_up(15)
-      expect{subject.deduct(10) }.to change {subject.balance }.by -10
-    end
-    it 'raises an error if the maximum balance is exceeded' do
-      expect{ subject.deduct 1 }.to raise_error "Not enough balance on card, please top up"
-    end
-  end
-
   describe '#touch_in' do
     it 'can touch in' do
       subject.top_up(20)
       subject.touch_in
       expect(subject).to be_in_journey
     end
+
     it 'raises an error when below minimum touch in balance' do
       expect{ subject.touch_in }.to raise_error "Below minimum touch in balance"
     end
@@ -53,6 +41,15 @@ subject(:oystercard) { described_class.new }
       subject.touch_in
       subject.touch_out
       expect(subject).not_to be_in_journey
+    end
+
+    it 'reduces the balance by minimum fare' do
+      subject.top_up(20)
+      subject.touch_in
+      expect{ subject.touch_out }.to change {subject.balance }.by (-Oystercard::MINIMUM_BALANCE)
+    end
+    it 'raises an error if the maximum balance is exceeded' do
+      expect{ subject.touch_out }.to raise_error "Not enough balance on card, please top up"
     end
   end
 

@@ -14,17 +14,13 @@ class Oystercard
     @balance += value
   end
 
-  def deduct(value)
-    fail "Not enough balance on card, please top up" if balance - value < 0
-    @balance -= value
-  end
-
   def touch_in
     fail "Below minimum touch in balance" if @balance < MINIMUM_BALANCE
     @in_use = true
   end
 
   def touch_out
+    deduct(MINIMUM_BALANCE)
     @in_use = false
   end
 
@@ -32,4 +28,9 @@ class Oystercard
     @in_use
   end
 
+  private
+  def deduct(value)
+    fail "Not enough balance on card, please top up" if balance - value < 0
+    @balance -= value
+  end
 end

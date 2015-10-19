@@ -34,26 +34,29 @@ describe Oystercard do
   end
 
   describe '#touch_in' do
-    it 'checks the return of value' do
-      expect{ subject.touch_in }.to change{ subject.in_use }.from(false).to(true)
+    it 'can touch in' do
+      subject.top_up(20)
+      subject.touch_in
+      expect(subject).to be_in_journey
     end
   end
 
   describe '#touch_out' do
-    it 'checks the return of value' do
+    it 'can touch out' do
       subject.touch_in
-      expect{ subject.touch_out }.to change{ subject.in_use }.from(true).to(false)
+      subject.touch_out
+      expect(subject).not_to be_in_journey
     end
   end
 
   describe '#in_journey?' do
-    it 'stores a state of the card' do
-      expect(subject.in_journey?)a.to eq false
+    it 'returns the in_use state when not in use' do
+      expect(subject).not_to be_in_journey
     end
 
-    it 'stores a state of the card' do
+    it 'returns the in_use state when in use' do
       subject.touch_in
-      expect(subject.in_journey?).to eq true
+      expect(subject).to be_in_journey
     end
   end
 end

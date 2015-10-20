@@ -63,10 +63,13 @@ describe Oystercard do
     it 'raises an error if the maximum balance is exceeded' do
       expect{ oystercard.touch_out(exit_station) }.to raise_error "Not enough balance on card, please top up"
     end
+
+    let(:journey) { {entry: entry_station, exit: exit_station} }
     it 'completes a journey to the journeys array' do
       oystercard.top_up(10)
       oystercard.touch_in(entry_station)
-      expect{oystercard.touch_out(exit_station)}.to change{oystercard.journeys.length}.by 1
+      oystercard.touch_out(exit_station)
+      expect(oystercard.journeys).to include journey
     end
   end
 

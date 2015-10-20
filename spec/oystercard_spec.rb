@@ -36,6 +36,11 @@ describe Oystercard do
       expect{ oystercard.touch_in(station) }.to raise_error "Below minimum touch in balance"
     end
 
+    it 'updates the @entry_station on touch_in' do
+      oystercard.top_up(20)
+      expect{ oystercard.touch_in(station) }.to change{ oystercard.entry_station }.to station
+    end
+
   end
 
   describe '#touch_out' do
@@ -57,11 +62,11 @@ describe Oystercard do
   end
 
   describe '#in_journey?' do
-    it 'returns the in_use state when not in use' do
+    it 'returns the false when not in journey' do
       expect(oystercard).not_to be_in_journey
     end
 
-    it 'returns the in_use state when in use' do
+    it 'returns the true state when in journey' do
       oystercard.top_up(20)
       oystercard.touch_in(station)
       expect(oystercard).to be_in_journey

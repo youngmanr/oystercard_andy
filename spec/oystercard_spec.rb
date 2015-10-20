@@ -8,6 +8,10 @@ describe Oystercard do
     it 'has a balance of zero' do
       expect(oystercard.balance).to eq(0)
     end
+
+    it 'has an empty list of journeys' do
+      expect(oystercard.journeys).to be_nil
+    end
   end
 
   describe '#top_up' do

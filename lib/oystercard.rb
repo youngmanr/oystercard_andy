@@ -17,12 +17,12 @@ class Oystercard
 
   def touch_in(station)
     fail "Below minimum touch in balance" if @balance < MINIMUM_FARE
-    @entry_station = station
+    @entry_station = Station.new(station)
   end
 
   def touch_out(station)
     deduct(MINIMUM_FARE)
-    @journeys << {:entry => @entry_station, :exit => station}
+    @journeys << {:entry => @entry_station, :exit => Station.new(station)}
     @entry_station = nil
     station
   end

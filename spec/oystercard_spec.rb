@@ -2,8 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) { described_class.new }
-  let(:entry_station) { double(:entry_station)}
-  let(:exit_station) { double(:exit_station)}
+  let(:entry_station) { double(:entry_station, name: "Old Street", zone: 1)}
+  let(:exit_station) { double(:exit_station, name: "Oxford Street", zone: 2)}
 
   describe '#initialize' do
     it 'has a balance of zero' do
@@ -83,7 +83,7 @@ describe Oystercard do
       oystercard.touch_in(entry_station)
       expect(oystercard).to be_in_journey
     end
-  end
 
+  end
 
 end

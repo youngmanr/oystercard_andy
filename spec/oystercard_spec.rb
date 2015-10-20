@@ -1,7 +1,8 @@
 require 'oystercard'
 
 describe Oystercard do
-subject(:oystercard) { described_class.new }
+  subject(:oystercard) { described_class.new }
+  let(:station) { double(:station)}
 
   describe '#initialize' do
     it 'has a balance of zero' do
@@ -27,26 +28,27 @@ subject(:oystercard) { described_class.new }
   describe '#touch_in' do
     it 'can touch in' do
       oystercard.top_up(20)
-      oystercard.touch_in
+      oystercard.touch_in(station)
       expect(oystercard).to be_in_journey
     end
 
     it 'raises an error when below minimum touch in balance' do
-      expect{ oystercard.touch_in }.to raise_error "Below minimum touch in balance"
+      expect{ oystercard.touch_in(station) }.to raise_error "Below minimum touch in balance"
     end
+
   end
 
   describe '#touch_out' do
     it 'can touch out' do
       oystercard.top_up(20)
-      oystercard.touch_in
+      oystercard.touch_in(station)
       oystercard.touch_out
       expect(oystercard).not_to be_in_journey
     end
 
     it 'reduces the balance by minimum fare' do
       oystercard.top_up(20)
-      oystercard.touch_in
+      oystercard.touch_in(station)
       expect{ oystercard.touch_out }.to change{ oystercard.balance }.by -Oystercard::MINIMUM_FARE
     end
     it 'raises an error if the maximum balance is exceeded' do
@@ -61,8 +63,10 @@ subject(:oystercard) { described_class.new }
 
     it 'returns the in_use state when in use' do
       oystercard.top_up(20)
-      oystercard.touch_in
+      oystercard.touch_in(station)
       expect(oystercard).to be_in_journey
     end
   end
+
+
 end

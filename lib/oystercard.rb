@@ -1,6 +1,6 @@
 class Oystercard
   MAXIMUM_BALANCE = 20
-  MINIMUM_BALANCE = 1
+  MINIMUM_FARE = 1
 
   attr_reader :balance, :in_use
 
@@ -15,12 +15,12 @@ class Oystercard
   end
 
   def touch_in
-    fail "Below minimum touch in balance" if @balance < MINIMUM_BALANCE
+    fail "Below minimum touch in balance" if @balance < MINIMUM_FARE
     @in_use = true
   end
 
   def touch_out
-    deduct(MINIMUM_BALANCE)
+    deduct(MINIMUM_FARE)
     @in_use = false
   end
 

@@ -16,7 +16,6 @@ describe Oystercard do
   end
 
   describe '#top_up' do
-    it { is_expected.to respond_to(:top_up).with(1) }
 
     it 'updates the value of the balance' do
       oystercard.top_up(5)
@@ -46,7 +45,6 @@ describe Oystercard do
       oystercard.touch_in(ENTRY_STATION)
       expect(oystercard.entry_station.name).to eq "Old Street"
     end
-
   end
 
   describe '#touch_out' do
@@ -61,7 +59,7 @@ describe Oystercard do
       oystercard.touch_in(ENTRY_STATION)
       expect{ oystercard.touch_out(EXIT_STATION) }.to change{ oystercard.balance }.by -Oystercard::MINIMUM_FARE
     end
-    it 'raises an error if the maximum balance is exceeded' do
+    it 'raises an error if the minimum balance is exceeded' do
       expect{ oystercard.touch_out(EXIT_STATION) }.to raise_error "Not enough balance on card, please top up"
     end
 

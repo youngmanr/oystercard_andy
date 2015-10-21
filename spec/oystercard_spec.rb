@@ -2,8 +2,6 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) { described_class.new }
-  let(:entry_station) { double(:entry_station, name: "Old Street", zone: 1)}
-  let(:exit_station) { double(:exit_station, name: "Oxford Street", zone: 2)}
   ENTRY_STATION = "Old Street"
   EXIT_STATION = "Camden"
 
@@ -40,7 +38,7 @@ describe Oystercard do
     end
 
     it 'raises an error when below minimum touch in balance' do
-      expect{ oystercard.touch_in(entry_station) }.to raise_error "Below minimum touch in balance"
+      expect{ oystercard.touch_in(ENTRY_STATION) }.to raise_error "Below minimum touch in balance"
     end
 
     it 'updates the @entry_station on touch_in' do
@@ -67,7 +65,6 @@ describe Oystercard do
       expect{ oystercard.touch_out(EXIT_STATION) }.to raise_error "Not enough balance on card, please top up"
     end
 
-    let(:journey) { {entry: entry_station, exit: exit_station} }
     it 'adds a journey to the journeys array' do
       oystercard.top_up(10)
       oystercard.touch_in(ENTRY_STATION)
